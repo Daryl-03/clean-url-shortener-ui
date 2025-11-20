@@ -1,0 +1,109 @@
+name: Next.js CI-CD
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+env:
+  WORKING_DIRECTORY: '.' 
+
+jobs:
+  test-lint:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '25'
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Type Check
+      run: pnpm tsc --noEmit
+
+    - name: Build Check
+      run: pnpm build
+      env:
+        NEXT_TELEMETRY_DISABLED: 1
+
+  release:
+    needs: test-lint
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js (pour récupérer la version)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '25'
+
+    - name: Get npm version
+      id: get_version
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "Frontend Version: $VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/${{ github.repository }}
+        tags: |
+          type=raw,value=${{ steps.get_version.outputs.VERSION }}
+          type=sha,prefix=,suffix=,enable=true
+          type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GHCR_TOKEN }}
+
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ env.WORKING_DIRECTORY }}
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Trigger Dokploy Deployment
+      run: |
+        curl -X 'POST' \
+        '${{ secrets.DOKPLOY_URL }}/api/trpc/application.deploy' \
+        -H 'accept: application/json' \
+        -H 'x-api-key: ${{ secrets.DOKPLOY_AUTH_TOKEN }}' \
+        -H 'Content-Type: application/json' \
+        -d '{
+            "json":{
+                "applicationId": "${{ secrets.DOKPLOY_FRONTEND_APP_ID }}"
+            }
+        }'

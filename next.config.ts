@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
+import { NextConfig } from "next/dist/types";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone",
 };
 
 export default nextConfig;

@@ -11,6 +11,9 @@
     "test-e2e": "pnpm exec playwright test"
   },
   "dependencies": {
+    "@kinde-oss/kinde-auth-nextjs": "^2.10.0",
+    "@radix-ui/react-avatar": "^1.1.11",
+    "@radix-ui/react-menubar": "^1.1.16",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
