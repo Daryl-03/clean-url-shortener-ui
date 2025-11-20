@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@/public/hopper-logo-transparent.svg";
+
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,7 +44,7 @@ export default function Header({ isAuthenticated }: { isAuthenticated: boolean |
 				<div className="flex items-center">
 					<Link href="/">
 						<Image
-							src={logo}
+							src="/hopper-logo-transparent.svg"
 							alt="Hopper Logo"
 							width={2000}
 							height={510}
