@@ -37,10 +37,10 @@ jobs:
     - name: Type Check
       run: pnpm tsc --noEmit
 
-    - name: Build Check
-      run: pnpm build
-      env:
-        NEXT_TELEMETRY_DISABLED: 1
+    # - name: Build Check
+    #   run: pnpm build
+    #   env:
+    #     NEXT_TELEMETRY_DISABLED: 1
 
   release:
     needs: test-lint

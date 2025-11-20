@@ -16,10 +16,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules 
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV KINDE_ISSUER_URL="https://dummy.kinde.com"
-ENV KINDE_SITE_URL="http://localhost:3000"
-ENV KINDE_POST_LOGIN_REDIRECT_URL="/dashboard"
-ENV KINDE_POST_LOGOUT_REDIRECT_URL="/"
 RUN corepack enable pnpm && pnpm run build
 
 FROM base AS runner
