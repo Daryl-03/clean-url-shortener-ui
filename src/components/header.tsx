@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../../public/hopper-logo-transparent.svg";
+import logo from "@/public/hopper-logo-transparent.svg";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
