@@ -2,9 +2,9 @@ name: Next.js CI-CD
 
 on:
     push:
-        branches: ["main", "develop"]
+        branches: ["main"]
     pull_request:
-        branches: ["main", "develop"]
+        branches: ["main"]
 
 env:
     WORKING_DIRECTORY: "."
@@ -61,6 +61,8 @@ jobs:
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+                  build-args: |
+                    NEXT_PUBLIC_STAGE=${{ secrets.NEXT_PUBLIC_STAGE }}
                   secrets: |
                     KINDE_ISSUER_URL=${{ secrets.KINDE_ISSUER_URL }}
                     KINDE_SITE_URL=${{ secrets.KINDE_SITE_URL }}

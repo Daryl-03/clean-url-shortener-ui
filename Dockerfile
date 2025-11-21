@@ -16,6 +16,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules 
 COPY . .
 
+ARG NEXT_PUBLIC_STAGE
+
+ENV NEXT_PUBLIC_STAGE=$NEXT_PUBLIC_STAGE
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
@@ -32,11 +35,11 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# On crée un user pour la sécurité (ne pas tourner en root)
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# On copie uniquement le dossier "standalone" généré par Next.js
+
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
