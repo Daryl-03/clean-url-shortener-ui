@@ -19,18 +19,12 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN --mount=type=secret,id=KINDE_ISSUER_URL \
-    --mount=type=secret,id=KINDE_SITE_URL \
-    --mount=type=secret,id=KINDE_CLIENT_ID \
-    --mount=type=secret,id=KINDE_CLIENT_SECRET \
-    --mount=type=secret,id=KINDE_POST_LOGIN_REDIRECT_URL \
-    --mount=type=secret,id=KINDE_POST_LOGOUT_REDIRECT_URL \
-    export KINDE_ISSUER_URL=$(cat /run/secrets/KINDE_ISSUER_URL) && \
-    export KINDE_SITE_URL=$(cat /run/secrets/KINDE_SITE_URL) && \
-    export KINDE_CLIENT_ID=$(cat /run/secrets/KINDE_CLIENT_ID) && \
-    export KINDE_CLIENT_SECRET=$(cat /run/secrets/KINDE_CLIENT_SECRET) && \
-    export KINDE_POST_LOGIN_REDIRECT_URL=$(cat /run/secrets/KINDE_POST_LOGIN_REDIRECT_URL) && \
-    export KINDE_POST_LOGOUT_REDIRECT_URL=$(cat /run/secrets/KINDE_POST_LOGOUT_REDIRECT_URL) && \
+RUN --mount=type=secret,id=KINDE_ISSUER_URL,env=KINDE_ISSUER_URL \
+    --mount=type=secret,id=KINDE_SITE_URL,env=KINDE_SITE_URL \
+    --mount=type=secret,id=KINDE_CLIENT_ID,env=KINDE_CLIENT_ID \
+    --mount=type=secret,id=KINDE_CLIENT_SECRET,env=KINDE_CLIENT_SECRET \
+    --mount=type=secret,id=KINDE_POST_LOGIN_REDIRECT_URL,env=KINDE_POST_LOGIN_REDIRECT_URL \
+    --mount=type=secret,id=KINDE_POST_LOGOUT_REDIRECT_URL,env=KINDE_POST_LOGOUT_REDIRECT_URL \
     corepack enable pnpm && pnpm run build
 
 FROM base AS runner
