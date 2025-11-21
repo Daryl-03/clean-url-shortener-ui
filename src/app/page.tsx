@@ -15,7 +15,7 @@ export default function Home() {
 			<main className="min-h-screen px-10 py-14 md:py-20 flex flex-col items-center gap-20 md:gap-30 md:px-60">
 				<div className="text-center">
 					<h1>
-						Shorten. Share. Track.
+						Shorten. Share. Track. 
 					</h1>
 					<p className="mt-6 text-lg text-foreground/70">
 						The simplest way to create, manage, and analyze your links.

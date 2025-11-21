@@ -50,8 +50,10 @@ export default function Header({ isAuthenticated }: { isAuthenticated: boolean |
 							height={510}
 							className="w-32 h-auto md:w-48"
 						/>
+						
 					</Link>
-
+					{process.env.NEXT_PUBLIC_STAGE === 'production' ? '' : `[${process.env.NEXT_PUBLIC_STAGE}]`}
+					
 					{isAuthenticated &&
 						<Button variant={"secondary"} size={"lg"} className="font-semibold ml-4 hidden md:flex items-center hover:bg-primary bg-primary/80" asChild>
 							<Link
