@@ -1,10 +1,11 @@
-"use client";
+
 
 import { Button } from "@/components/ui/button";
 
 import { ChartSpline, Shield, Zap } from "lucide-react";
-import { FeatureCard } from "@/components/featureCard";
-import { WorkflowStep } from "@/components/workflowStep";
+import { FeatureCard } from "@/components/home/featureCard";
+import { WorkflowStep } from "@/components/home/workflowStep";
+import Link from "next/link";
 
 export default function Home() {
 
@@ -22,7 +23,7 @@ export default function Home() {
 					</p>
 
 					<Button variant={"default"} size={"lg"} className="mt-8 font-semibold md:w-60 md:h-12 md:text-2xl" >
-						Get Started
+						<Link href="/links">Get Started</Link>
 					</Button>
 				</div >
 

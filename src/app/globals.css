@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-	--background: oklch(0.9819 0.0029 264.5421);
+	--background: oklch(0.9757 0.0017 247.84);
 	--foreground: oklch(0.2793 0.0367 268.4327);
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.2793 0.0367 268.4327);
