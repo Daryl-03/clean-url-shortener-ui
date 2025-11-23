@@ -3,12 +3,12 @@ import { Shortlink } from '@/types/shortlink';
 import { error } from 'console';
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 const {getAccessToken, getAccessTokenRaw} = getKindeServerSession();
-const rawAccessToken = await getAccessTokenRaw();
 
 
 export class RestShortlinkApi implements ShortlinkApiPort {
 	private backendUrl = process.env.NEXT_BACKEND_URL || '';
 	async createShortlink(originalUrl: string): Promise<Shortlink> {
+		const rawAccessToken = await getAccessTokenRaw();
 		const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
 			method: 'POST',
 			headers: {
@@ -17,20 +17,21 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 			},
 			body: JSON.stringify({ url: originalUrl })
 		});
-
+		
 		if (!response.ok) {
 			const errorResponse = await response.json();
 			throw new Error(errorResponse.message || 'Failed to create shortlink');
 		}
-
+		
 		const result = await response.json();
-
+		
 		return {
 			...result
 		};
 	}
-
+	
 	async getAllShortlinks(): Promise<Shortlink[]> {
+		const rawAccessToken = await getAccessTokenRaw();
 		const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
 			method: 'GET',
 			headers: {
