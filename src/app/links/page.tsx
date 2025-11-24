@@ -1,9 +1,7 @@
 
-
 import CreateLinkDialog from "@/components/links/createLinkDialog";
 import LinkList from "@/components/links/linkList";
 import { shortlinkApi } from "@/lib/dependencies";
-import { Shortlink } from "@/types/shortlink";
 
 
 export default async function LinksPage() {

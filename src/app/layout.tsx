@@ -45,7 +45,7 @@ export default async function RootLayout({
       >
 		<Header isAuthenticated={isAuthed} />
         {children}
-		<Toaster />
+		<Toaster position="top-center" />
 		<Footer/>
       </body>
 
