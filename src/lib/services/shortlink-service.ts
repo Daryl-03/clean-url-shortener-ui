@@ -36,6 +36,8 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 		const rawAccessToken = await getAccessTokenRaw();
 		
 		try {
+			console.log("trying to fetch");
+			
 			const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
 			method: 'GET',
 				headers: {
@@ -43,6 +45,9 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 					'Authorization': `Bearer ${rawAccessToken}`
 				}
 			});
+			console.log("received resp : ", response);
+			console.log("response status:", response.status);
+			
 			// if (!response.ok) {			
 			// 	const errorResponse = JSON.parse(await response.text());
 			// 	throw new Error(errorResponse.message || 'Failed to fetch shortlinks');

@@ -26,7 +26,7 @@ export default async function LinksPage() {
 				<LinkList links={links}></LinkList>
 			</div>
 				{error && <span className="text-destructive mb-4">{error}</span>}
-				{error && <span className="text-destructive mb-4">{error}</span>}
+				{error && <span className="text-destructive mb-4">{message}</span>}
 		
 
 			<CreateLinkDialog />
