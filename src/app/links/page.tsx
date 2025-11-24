@@ -7,12 +7,14 @@ import { shortlinkApi } from "@/lib/dependencies";
 export default async function LinksPage() {
 	let links;
 	let error = null;
+	let message = null;
 
 	try {
 		links = await shortlinkApi.getAllShortlinks();
 	} catch (e) {
 		console.error("Erreur fetching links:", e);
 		error = "Could not fetch links. Please try again later.";
+		message = (e instanceof Error) ? e.message : String(e);
 	}
 
 	return (
@@ -23,6 +25,7 @@ export default async function LinksPage() {
 			<div className="mb-40 md:mb-0">
 				<LinkList links={links}></LinkList>
 			</div>
+				{error && <span className="text-destructive mb-4">{error}</span>}
 				{error && <span className="text-destructive mb-4">{error}</span>}
 		
 
