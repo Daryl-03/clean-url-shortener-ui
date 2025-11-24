@@ -36,7 +36,6 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 		const rawAccessToken = await getAccessTokenRaw();
 		
 		try {
-			console.log("trying to fetch");
 			
 			const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
 			method: 'GET',
@@ -45,18 +44,29 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 					'Authorization': `Bearer ${rawAccessToken}`
 				}
 			});
-			console.log("received resp : ", response);
-			console.log("response status:", response.status);
 			
-			// if (!response.ok) {			
-			// 	const errorResponse = JSON.parse(await response.text());
-			// 	throw new Error(errorResponse.message || 'Failed to fetch shortlinks');
-			// }
 			const result = await response.json();
 			return result;
 		} catch (e) {
 			console.error("Error fetching shortlinks:", e);
 			throw e;
+		}
+	}
+
+	async deleteShortlink(id: string): Promise<void> {
+		const rawAccessToken = await getAccessTokenRaw();
+
+		const response = await fetch(`${this.backendUrl}/api/shortlinks/${id}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${rawAccessToken}`
+			}
+		});
+
+		if (!response.ok) {
+			const errorResponse = await response.json();
+			throw new Error(errorResponse.message || 'Failed to delete shortlink');
 		}
 	}
 
@@ -78,6 +88,10 @@ export class InMemoryShortlinkApi implements ShortlinkApiPort {
 
 	async getAllShortlinks(): Promise<Shortlink[]> {
 		return this.shortlinks;
+	}
+
+	async deleteShortlink(id: string): Promise<void> {
+		this.shortlinks = this.shortlinks.filter(link => link.id !== id);
 	}
 
 }

@@ -1,6 +1,9 @@
 import { Table, TableHeader, TableCaption, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Shortlink } from "@/types/shortlink";
 import LinkListLine from "./linkListLine";
+import { shortlinkApi } from "@/lib/dependencies";
+import { deleteShortlinkAction } from "@/lib/actions/shortlinks/shortlinks";
+import { toast } from "sonner";
 
 
 export interface LinkListProps {
@@ -8,6 +11,7 @@ export interface LinkListProps {
 }
 
 export default function LinkList({ links }: LinkListProps) {
+
 	return (
 		<Table>
 			<TableHeader className="uppercase" >
@@ -20,7 +24,10 @@ export default function LinkList({ links }: LinkListProps) {
 			</TableHeader>
 			<TableBody className="bg-card text-card-foreground " >
 				{links?.map((link) => (
-					<LinkListLine link={link} key={link.id} ></LinkListLine>
+					<LinkListLine
+						link={link} 
+						key={link.id} 
+					></LinkListLine>
 				))}
 			</TableBody>
 		</Table>
