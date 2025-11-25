@@ -2,9 +2,10 @@
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import CreateLinkForm from "./createLinkForm";
 import { useState } from "react";
 import { toast } from "sonner";
+import ShortlinkForm from "./shortlinkForm";
+import { createShortlinkAction } from "@/lib/actions/shortlinks/shortlinks";
 
 export default function CreateLinkDialog() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function CreateLinkDialog() {
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen} >
 			<DialogTrigger>
-				<div className="absolute bottom-5 md:bottom-10 right-5 md:right-24 bg-chart-1 rounded-full p-4 cursor-pointer" >
+				<div className="absolute bottom-5 md:bottom-10 right-5 md:right-24 bg-primary rounded-full p-4 cursor-pointer" >
 					<Plus className="text-primary-foreground" />
 				</div>
 			</DialogTrigger>
@@ -31,7 +32,7 @@ export default function CreateLinkDialog() {
 						<DialogDescription>
 						</DialogDescription>
 					</DialogHeader>
-				<CreateLinkForm onSuccess={() => setIsOpen(false)} />
+				<ShortlinkForm onSuccess={() => setIsOpen(false)} action={createShortlinkAction} />
 			</DialogContent>
 		</Dialog>
 	);

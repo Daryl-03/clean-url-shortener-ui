@@ -71,3 +71,33 @@ export async function deleteShortlinkAction(id: string): Promise<DeleteShortlink
 		};
 	}
 }
+
+export async function updateShortlinkAction(
+	id: string,
+	prevState: any,
+	formData: FormData
+): Promise<CreateShortlinkActionResponse> {
+	const originalUrl = formData.get("link") as string;
+
+	const validation = createShortlinkSchema.safeParse({ originalUrl });
+	if (!validation.success) {
+		return {
+			success: false,
+			error: validation.error.issues[0].message
+		};
+	}
+	try {
+		const updatedShortlink = await shortlinkApi.updateShortlink(id, originalUrl );
+		revalidatePath("/links");
+		return {
+			success: true,
+			data: updatedShortlink
+		};
+	} catch (error: any) {
+		console.log(error);
+		return {
+			success: false,
+			error: error.message || 'An unexpected error occurred'
+		};
+	}
+}

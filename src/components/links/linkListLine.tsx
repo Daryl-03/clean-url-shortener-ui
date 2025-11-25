@@ -9,6 +9,7 @@ import { Copy, Edit, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { deleteShortlinkAction } from "@/lib/actions/shortlinks/shortlinks";
 import ConfirmDialogError from "../shared/confirmDialog";
+import UpdateLinkDialog from "./updateLinkDialog";
 
 export interface LinkListLineProps {
 	link: Shortlink;
@@ -67,9 +68,7 @@ export default function LinkListLine({ link }: LinkListLineProps) {
 			</TableCell>
 			<TableCell className="" >
 				<div className="text-center flex gap-4 py-6 pl-2 items-center">
-					<Button variant={"outline"} size={"icon"} className="font-semibold cursor-pointer size-5" asChild>
-						<Edit className="text-foreground/70 hover:text-foreground" size={16} />
-					</Button>
+					<UpdateLinkDialog link={link} />
 					<ConfirmDialogError onConfirm={() => handleDelete(link.id)}>
 						<Button variant={"ghost"} size={"icon"} className="font-semibold cursor-pointer size-5" asChild>
 							<Trash className="text-destructive/70 hover:text-destructive" size={16} />

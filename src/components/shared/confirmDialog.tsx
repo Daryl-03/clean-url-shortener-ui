@@ -19,7 +19,7 @@ export default function ConfirmDialogError({ onConfirm, children, title, descrip
 	};
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen} >
-			<DialogTrigger>
+			<DialogTrigger asChild >
 				{children}
 			</DialogTrigger>
 			<DialogContent>

@@ -15,7 +15,7 @@ export default function LinkList({ links }: LinkListProps) {
 	return (
 		<Table>
 			<TableHeader className="uppercase" >
-				<TableRow className=" font-bold border-2 border-border" >
+				<TableRow className=" font-bold border-2 border-border shadow" >
 					<TableHead className="pl-4 py-2 w-1/2 rounded-tl-md">Original url</TableHead>
 					<TableHead className="pl-4 py-2 w-1/5" >Short url</TableHead>
 					<TableHead className="pl-4 py-2 w-1/5" >Date created</TableHead>

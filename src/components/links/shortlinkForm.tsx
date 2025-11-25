@@ -7,12 +7,19 @@ import { Button } from "@/components/ui/button";
 import { use, useActionState, useEffect } from "react";
 import { createShortlinkAction, CreateShortlinkActionResponse } from "@/lib/actions/shortlinks/shortlinks";
 import { Spinner } from "../ui/spinner";
+import { Shortlink } from "@/types/shortlink";
 
-export default function CreateLinkForm({ onSuccess }: { onSuccess: () => void }) {
+export interface ShortlinkFormProps {
+	onSuccess: () => void;
+	initialData?: Shortlink;
+	action: (prevStave: any, formData: FormData) => Promise<any>;
+}
+
+export default function ShortlinkForm({ onSuccess, initialData, action }: ShortlinkFormProps) {
 	const initialState: CreateShortlinkActionResponse = {
 		success: false,
 	};
-	const [state, dispatch, isPending] = useActionState(createShortlinkAction, initialState);
+	const [state, dispatch, isPending] = useActionState(action, initialState);
 
 	useEffect(() => {
 		if (state.success) {
@@ -25,7 +32,7 @@ export default function CreateLinkForm({ onSuccess }: { onSuccess: () => void })
 			<div className="grid gap-4">
 				<div className="grid gap-3">
 					<Label htmlFor="link" className="font-semibold" >Link</Label>
-					<Input id="link" name="link" placeholder="Enter your link here" />
+					<Input id="link" name="link" placeholder="Enter your link here" defaultValue={initialData?.originalUrl} />
 					{
 						state.success === false && state.error && (
 							<p className="text-destructive text-sm mt-1" >

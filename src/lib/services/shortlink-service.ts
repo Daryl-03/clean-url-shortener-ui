@@ -70,6 +70,29 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 		}
 	}
 
+	async updateShortlink(id: string, originalUrl: string): Promise<Shortlink> {
+		const rawAccessToken = await getAccessTokenRaw();
+
+		const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${rawAccessToken}`
+			},
+			body: JSON.stringify({ id: id, url: originalUrl })
+		});
+
+		if (!response.ok) {
+			const errorResponse = await response.json();
+			error(errorResponse)
+			throw new Error(errorResponse.message || 'Failed to update shortlink');
+		}
+
+		const result = await response.json();
+		return {
+			...result
+		};
+	}
 }
 
 export class InMemoryShortlinkApi implements ShortlinkApiPort {
@@ -92,6 +115,20 @@ export class InMemoryShortlinkApi implements ShortlinkApiPort {
 
 	async deleteShortlink(id: string): Promise<void> {
 		this.shortlinks = this.shortlinks.filter(link => link.id !== id);
+	}
+
+	async updateShortlink(id: string, originalUrl: string): Promise<Shortlink> {
+		const index = this.shortlinks.findIndex(link => link.id === id);
+		if (index === -1) {
+			throw new Error('Shortlink not found');
+		}
+		const updatedShortlink: Shortlink = {
+			...this.shortlinks[index],
+			originalUrl,
+			updatedAt: new Date(),
+		};
+		this.shortlinks[index] = updatedShortlink;
+		return updatedShortlink;
 	}
 
 }
