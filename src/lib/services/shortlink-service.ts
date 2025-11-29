@@ -93,6 +93,24 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 			...result
 		};
 	}
+
+	async getShortlinkByCode(shortCode: string): Promise<Shortlink | null> {
+		const rawAccessToken = await getAccessTokenRaw();
+
+		const response = await fetch(`${this.backendUrl}/api/shortlinks/slug/${shortCode}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${rawAccessToken}`
+			}
+		});
+		if (!response.ok) {
+			const errorResponse = await response.json();
+			throw new Error(errorResponse.message || 'Failed to fetch shortlink by code');
+		}
+		const result = await response.json();
+		return result || null;
+	}
 }
 
 export class InMemoryShortlinkApi implements ShortlinkApiPort {
@@ -129,6 +147,11 @@ export class InMemoryShortlinkApi implements ShortlinkApiPort {
 		};
 		this.shortlinks[index] = updatedShortlink;
 		return updatedShortlink;
+	}
+
+	async getShortlinkByCode(shortCode: string): Promise<Shortlink | null> {
+		const link = this.shortlinks.find(link => link.shortCode === shortCode);
+		return link || null;
 	}
 
 }

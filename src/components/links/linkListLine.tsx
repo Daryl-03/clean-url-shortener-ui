@@ -5,7 +5,7 @@ import { Shortlink } from "@/types/shortlink";
 import { TableCell, TableRow } from "@/components/ui/table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Copy, Edit, Trash } from "lucide-react";
+import { ChartLine, Copy, Edit, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { deleteShortlinkAction } from "@/lib/actions/shortlinks/shortlinks";
 import ConfirmDialogError from "../shared/confirmDialog";
@@ -21,10 +21,10 @@ export default function LinkListLine({ link }: LinkListLineProps) {
 		const result = await deleteShortlinkAction(id);
 		if (result.success) {
 			toast.success("Link deleted successfully.");
-			
+
 		} else {
 			toast.error("Could not delete link. Please try again later.");
-			
+
 		}
 	}
 
@@ -68,6 +68,11 @@ export default function LinkListLine({ link }: LinkListLineProps) {
 			</TableCell>
 			<TableCell className="" >
 				<div className="text-center flex gap-4 py-6 pl-2 items-center">
+					<Link
+						href={`/analytics/${link.shortCode}`}
+					>
+						<ChartLine className="text-card-foreground/70 hover:text-primary size-5" size={16} />
+					</Link>
 					<UpdateLinkDialog link={link} />
 					<ConfirmDialogError onConfirm={() => handleDelete(link.id)}>
 						<Button variant={"ghost"} size={"icon"} className="font-semibold cursor-pointer size-5" asChild>

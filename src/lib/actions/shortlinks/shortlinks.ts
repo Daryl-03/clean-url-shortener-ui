@@ -101,3 +101,13 @@ export async function updateShortlinkAction(
 		};
 	}
 }
+
+export async function getShortlinkByCodeAction(shortCode: string): Promise<Shortlink | null> {
+	try {
+		const shortlink = await shortlinkApi.getShortlinkByCode(shortCode);
+		return shortlink;
+	} catch (error: any) {
+		console.log(error);
+		return null;
+	}
+}

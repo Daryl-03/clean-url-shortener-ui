@@ -5,4 +5,5 @@ export interface ShortlinkApiPort {
 	getAllShortlinks(): Promise<Shortlink[]>;
 	deleteShortlink(id: string): Promise<void>;
 	updateShortlink(id: string, originalUrl: string): Promise<Shortlink>;
+	getShortlinkByCode(shortCode: string): Promise<Shortlink | null>;
 }
