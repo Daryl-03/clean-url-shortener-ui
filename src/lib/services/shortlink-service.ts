@@ -1,16 +1,16 @@
 import { ShortlinkApiPort } from '@/lib/ports/shortlinks-port';
 import { Shortlink } from '@/types/shortlink';
-import { error } from 'console';
-import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import { error, log } from 'console';
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ca } from 'zod/v4/locales';
-const {getAccessToken, getAccessTokenRaw} = getKindeServerSession();
+const { getAccessToken, getAccessTokenRaw } = getKindeServerSession();
 
 
 export class RestShortlinkApi implements ShortlinkApiPort {
 	private backendUrl = process.env.NEXT_BACKEND_URL || '';
 	async createShortlink(originalUrl: string): Promise<Shortlink> {
 		const rawAccessToken = await getAccessTokenRaw();
-		
+
 		const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
 			method: 'POST',
 			headers: {
@@ -19,32 +19,32 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 			},
 			body: JSON.stringify({ url: originalUrl })
 		});
-		
+
 		if (!response.ok) {
 			const errorResponse = await response.json();
 			throw new Error(errorResponse.message || 'Failed to create shortlink');
 		}
-		
+
 		const result = await response.json();
-		
+
 		return {
 			...result
 		};
 	}
-	
+
 	async getAllShortlinks(): Promise<Shortlink[]> {
 		const rawAccessToken = await getAccessTokenRaw();
-		
+		console.log("Access Token:", rawAccessToken);
 		try {
-			
+
 			const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
-			method: 'GET',
+				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${rawAccessToken}`
+					'Authorization': `Bearer ${rawAccessToken}`,
 				}
 			});
-			
+			console.log("Fetch response:", response);
 			const result = await response.json();
 			return result;
 		} catch (e) {

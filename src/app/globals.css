@@ -222,4 +222,8 @@ body {
 	Link:focus-visible, Link :focus-visible, a:focus-visible{
 		@apply outline-none ring-2 ring-ring;
 	}
+
+	main {
+		@apply flex-1;
+	}
 }

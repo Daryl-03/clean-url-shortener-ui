@@ -190,9 +190,9 @@ export default function Header({ isAuthenticated }: { isAuthenticated: boolean |
 							{/* logout mobile */}
 							<a
 								href={logoutPath}
-								className="border-t-border border-t-[1px] w-full text-center pt-3 flex justify-center"
+								className="border-t-border border-t-[1px] w-full text-center pt-3 flex justify-center items-center"
 							>
-								<LogOut className="inline-block mb-1 mr-2" />
+								<LogOut className="mr-2" />
 								<span className="" >
 									Logout
 								</span>
