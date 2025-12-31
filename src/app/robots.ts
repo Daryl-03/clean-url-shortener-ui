@@ -12,8 +12,6 @@ export default function robots(): MetadataRoute.Robots {
     }
   }
 
-console.log(`Current stage: ${process.env.NEXT_PUBLIC_STAGE}`); //TODO: remove this line after debugging
-
   return {
     rules: {
       userAgent: '*',

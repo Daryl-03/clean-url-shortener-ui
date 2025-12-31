@@ -1,6 +1,6 @@
 import { ShortlinkApiPort } from '@/lib/ports/shortlinks-port';
 import { Shortlink } from '@/types/shortlink';
-import { error, log } from 'console';
+import { error } from 'console';
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ca } from 'zod/v4/locales';
 const { getAccessToken, getAccessTokenRaw } = getKindeServerSession();
@@ -34,7 +34,7 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 
 	async getAllShortlinks(): Promise<Shortlink[]> {
 		const rawAccessToken = await getAccessTokenRaw();
-		console.log("Access Token:", rawAccessToken);
+		
 		try {
 
 			const response = await fetch(`${this.backendUrl}/api/shortlinks`, {
@@ -44,7 +44,6 @@ export class RestShortlinkApi implements ShortlinkApiPort {
 					'Authorization': `Bearer ${rawAccessToken}`,
 				}
 			});
-			console.log("Fetch response:", response);
 			const result = await response.json();
 			return result;
 		} catch (e) {

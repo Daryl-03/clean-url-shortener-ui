@@ -17,8 +17,6 @@ import { DateRange } from "react-day-picker";
 import { CalendarIcon, MousePointerClick } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { toast } from "sonner";
-import { ca, da } from "date-fns/locale";
 
 
 interface PageProps {
@@ -41,13 +39,13 @@ export default function AnalyticsPage({ params }: PageProps) {
 			return;
 		}
 		const dateRange = formatDateRange(timeRange);
-		console.log("Fetching analytics data from " + dateRange.startDate.toDateString() + " to " + dateRange.endDate.toDateString());
+		
 		const clicks = await getCuratedClickEventsAction(
 			shortlink.id,
 			dateRange.startDate,
 			dateRange.endDate
 		);
-		console.log(clicks);
+		
 		setData(clicks);
 		setLoading(false);
 	}
