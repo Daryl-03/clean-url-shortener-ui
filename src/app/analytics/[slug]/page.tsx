@@ -9,7 +9,7 @@ import { getCuratedClickEventsAction } from "@/lib/actions/analytics/analytics";
 import { getShortlinkByCodeAction } from "@/lib/actions/shortlinks/shortlinks";
 import { ClickEventStat } from "@/types/clickEvent";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -22,20 +22,18 @@ import { ca, da } from "date-fns/locale";
 
 
 interface PageProps {
-	params: {
-		slug: string;
-	};
+	params: Promise<{ slug: string }>;
 }
 
 export default function AnalyticsPage({ params }: PageProps) {
 	const [timeRange, setTimeRange] = useState("30d");
 	const [clickData, setData] = useState<ClickEventStat | null>(null);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [date, setDate] = useState<DateRange | undefined>();
+	const { slug } = use(params);
 
 	async function fetchData() {
 		setLoading(true);
-		const { slug } = await params;
 		const shortlink = await getShortlinkByCodeAction(slug);
 
 		if (!shortlink) {
@@ -63,9 +61,7 @@ export default function AnalyticsPage({ params }: PageProps) {
 		return <>
 			<AnalyticsDashboardSkeleton></AnalyticsDashboardSkeleton>
 		</>;
-	}
-
-	if (!clickData || clickData === null) {
+	}else if (!clickData || clickData === null) {
 		return <>
 			<main className="flex-1 px-5 md:px-24 pt-10 pb-10 md:pt-10 md:pb-0 flex flex-col gap-10 relative">
 				<h1 className="md:hidden" >Link Analytics</h1>
@@ -113,30 +109,32 @@ export default function AnalyticsPage({ params }: PageProps) {
 			<h1 className="md:hidden" >Link Analytics</h1>
 			<h2 className="hidden md:block" >Link Analytics</h2>
 
-			<section className="container flex justify-end gap-6" >
+			<section className="container flex flex-col md:flex-row justify-end gap-6" >
 				<Popover>
 					<PopoverTrigger asChild>
 						<Button
 							id="date"
 							variant={"outline"}
 							className={cn(
-								"w-60 justify-start text-left font-normal bg-white! rounded-lg",
+								"min-w-30 md:w-60 justify-start text-left font-normal bg-white! rounded-lg",
 								!date && "text-muted-foreground"
 							)}
 						>
 							<CalendarIcon className="mr-2 h-4 w-4" />
-							{date?.from ? (
-								date.to ? (
-									<>
-										{format(date.from, "LLL dd, y")} -{" "}
-										{format(date.to, "LLL dd, y")}
-									</>
+							
+								{date?.from ? (
+									date.to ? (
+										<span className="inline" >
+											{format(date.from, "LLL dd, y")} -{" "}
+											{format(date.to, "LLL dd, y")}
+										</span>
+									) : (
+										format(date.from, "LLL dd, y")
+									)
 								) : (
-									format(date.from, "LLL dd, y")
-								)
-							) : (
-								<span>Pick a date</span>
-							)}
+									<span>Pick a date</span>
+								)}
+							
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-auto p-2" align="end">
@@ -186,8 +184,8 @@ export default function AnalyticsPage({ params }: PageProps) {
 					</SelectContent>
 				</Select>
 			</section>
-			<section className="container grid grid-cols-7 gap-10" >
-				<Card className=" col-span-2 h-fit shadow-md border-0" >
+			<section className="container grid grid-cols-1 md:grid-cols-7 gap-10" >
+				<Card className=" col-span-2 w-full h-fit shadow-md border-0" >
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<MousePointerClick className="" />
@@ -210,7 +208,7 @@ export default function AnalyticsPage({ params }: PageProps) {
 
 			</section>
 
-			<section className="container grid grid-cols-2 gap-10">
+			<section className="container grid md:grid-cols-2 gap-10">
 				<BrowserPieChart data={clickData!.browserStats} />
 				<CountryTable data={clickData!.countryStats} />
 			</section>

@@ -105,43 +105,25 @@ export default function Header({ isAuthenticated }: { isAuthenticated: boolean |
 
 				}
 
-				{/* {
-					!isAuthenticated &&
-					<div className="hidden md:flex">
-						<Link
-							href="/links"
-							className="text-foreground/90 hover:text-foreground font-semibold"
-						>
-							My Links
-						</Link>
-					</div>
-				} */}
-
 				{/* user avatar */}
 				{
 					isAuthenticated &&
-					<div className="hidden md:flex gap-20 items-center">
-						{/* <Link
-							href="/links"
-							className="text-foreground/90 hover:text-foreground font-semibold"
-						>
-							My Links
-						</Link> */}
+					<div className="hidden md:flex  items-center">
 						<Menubar className="outline-none border-none bg-background focus:bg-background active:bg-background" >
-							<MenubarMenu  >
+							<MenubarMenu >
 								<MenubarTrigger className="outline-none border-none" >
 									<Avatar className="cursor-pointer " >
 										<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
 										<AvatarFallback>You</AvatarFallback>
 									</Avatar>
 								</MenubarTrigger>
-								<MenubarContent className="border-secondary " >
+								<MenubarContent className="border-secondary mr-4"  >
 									<MenubarItem className="cursor-pointer" >
 										<a
 											href={logoutPath}
-											className="w-full text-center flex justify-center"
+											className="w-full text-center items-center gap-2 flex justify-center"
 										>
-											<LogOut className="inline-block mb-1 mr-2" />
+											<LogOut className="inline-block" />
 											<span className="" >
 												Logout
 											</span>
@@ -156,7 +138,7 @@ export default function Header({ isAuthenticated }: { isAuthenticated: boolean |
 
 			{/* mobile menu */}
 			{mobileMenuOpen && (
-				<div ref={menuRef} className="absolute top-full left-0 w-full bg-background shadow-lg md:hidden ">
+				<div ref={menuRef} className="absolute z-50 top-full left-0 w-full bg-background shadow-lg md:hidden ">
 
 					{
 						!isAuthenticated &&
