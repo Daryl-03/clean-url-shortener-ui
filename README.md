@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hopper - URL Shortener
+
+A modern URL shortener built with Next.js 15, React 19, and TypeScript.
+
+## Features
+
+- **URL Shortening**: Create and manage short links with custom aliases
+- **Analytics**: Track link performance with detailed click analytics  
+- **Authentication**: Secure user authentication via Kinde OAuth
+- **Responsive Design**: Mobile-first design with Tailwind CSS
+
+## Tech Stack
+
+- **Next.js** 15.5.4 - React framework with App Router
+- **React** 19.1.0 - UI library with server components
+- **TypeScript** 5.9.2 - Type safety
+- **Tailwind CSS** 4.x - Styling
+- **Kinde Auth** 2.10.0 - Authentication
+- **Playwright** 1.56.1 - E2E testing [1](#1-0) 
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Set up Kinde authentication environment variables
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Run development server:
+   ```bash
+   pnpm run dev
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Open [http://localhost:3000](http://localhost:3000) [2](#1-1) 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+- `pnpm run dev` - Start development server
+- `pnpm run build` - Create production build
+- `pnpm run test-e2e` - Run Playwright tests
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application uses Docker with GitHub Actions CI/CD for automated deployment to production via Dokploy. [3](#1-2) 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Wiki pages you might want to explore:
+- [Architecture (Daryl-03/clean-url-shortener-ui)](/wiki/Daryl-03/clean-url-shortener-ui#2)
+- [Application Structure and Routing (Daryl-03/clean-url-shortener-ui)](/wiki/Daryl-03/clean-url-shortener-ui#2.2)
+- [Production Environment (Daryl-03/clean-url-shortener-ui)](/wiki/Daryl-03/clean-url-shortener-ui#3.3)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
